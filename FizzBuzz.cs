@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace FizzBuzz
 {
@@ -33,19 +34,21 @@ namespace FizzBuzz
 					{
 						myStringGame = "FezzBong";
 					}
-					else 
-					{
-						myStringGame = "Bong";
-					}
+					
+				}
+
+				if (i % 11 == 0 && i % 13 != 0)
+				{
+					myStringGame = "Bong";
 				}
 				
 				
-				//if (i % 17 == 0)
-				//{
-				//	List<String> fizzyBuzz = new List<String>();
-					
-				//}
-				
+				if (i % 17 == 0)
+				{
+					List<string> fizzyBuzz = new List<string>(Regex.Split(myStringGame, @"\s+"));
+					fizzyBuzz.Reverse();
+					myStringGame = string.Join("" + fizzyBuzz);
+				}
 				
 				if (myStringGame.Length == 0)
 				{
