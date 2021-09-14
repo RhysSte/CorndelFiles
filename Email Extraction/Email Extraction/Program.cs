@@ -1,8 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
+using System.Text.RegularExpressions;
 
 namespace Email_Extraction
 {
@@ -10,12 +8,34 @@ namespace Email_Extraction
     {
         static void Main(string[] args)
         {
-            // The code provided will print ‘Hello World’ to the console.
-            // Press Ctrl+F5 (or go to Debug > Start Without Debugging) to run your app.
-            Console.WriteLine("Hello World!");
-            Console.ReadKey();
+            string input = File.ReadAllText(@"C:\Corndel\Email Extraction\sample.txt").Replace(Environment.NewLine, " ");
+            string pattern = @"@softwire.com ";
 
-            // Go to http://aka.ms/dotnet-get-started-console to continue learning how to build a console app! 
+            if (Regex.Match(pattern, input).Success)
+            {
+                Console.WriteLine("works");
+            }
+
+            int counter = Regex.Matches(input, pattern).Count;
+
+
+
+            /*
+            for (int i = 0; input.Length < i; i++)
+            {
+                if (input.Substring(i, 13) == "@softwire.com")
+                {
+                    counter++;
+                }
+            }
+            */
+
+
+
+           
+         
+            Console.WriteLine(counter);
+            Console.ReadLine();
         }
     }
 }
