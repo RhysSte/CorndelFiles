@@ -44,12 +44,15 @@ namespace Email_Extraction
                 }      
             }
 
+
+
             foreach (KeyValuePair<string, int> kvp in RepeatedWordCount)
             {
                 Console.WriteLine("{0} has {1} other of the same name", kvp.Key, kvp.Value);
             }
 
             Console.Read();
+
             //END
 
 
