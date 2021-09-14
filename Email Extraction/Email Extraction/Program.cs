@@ -1,6 +1,8 @@
 using System;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Collections.Generic;
+
 
 namespace Email_Extraction
 {
@@ -8,8 +10,9 @@ namespace Email_Extraction
     {
         static void Main(string[] args)
         {
-            string input = File.ReadAllText(@"C:\Corndel\Email Extraction\sample.txt").Replace(Environment.NewLine, " ");
+            string input = File.ReadAllText(@"C:\Corndel\Email Extraction\sample.txt");
             string pattern = @"@softwire.com ";
+            string domain = @"@";
 
             if (Regex.Match(pattern, input).Success)
             {
@@ -18,22 +21,40 @@ namespace Email_Extraction
 
             int counter = Regex.Matches(input, pattern).Count;
 
+            //Dictionary<string, Int16> domains = new Dictionary<string, Int16>();
 
-
-            /*
-            for (int i = 0; input.Length < i; i++)
+            //Understanding Dictionary
+            
+            
+            var splitWord = input.Split(' '); // Collects the string
+            Dictionary<string, int> RepeatedWordCount = new Dictionary<string, int>(); // looks for the repeated words by making dictionary
+            for (int i = 0; i < splitWord.Length; i++)// checks the length of a string
             {
-                if (input.Substring(i, 13) == "@softwire.com")
+                if (Regex.IsMatch(domain, splitWord[i]))
                 {
-                    counter++;
-                }
+                    if (RepeatedWordCount.ContainsKey(splitWord[i]))
+                    {
+                        int value = RepeatedWordCount[splitWord[i]];
+                        RepeatedWordCount[splitWord[i]] = value + 1;
+                    }
+                    else
+                    {
+                        RepeatedWordCount.Add(splitWord[i], 1);
+                    }
+                }      
             }
-            */
+
+            foreach (KeyValuePair<string, int> kvp in RepeatedWordCount)
+            {
+                Console.WriteLine("{0} has {1} other of the same name", kvp.Key, kvp.Value);
+            }
+
+            Console.Read();
+            //END
 
 
 
-           
-         
+
             Console.WriteLine(counter);
             Console.ReadLine();
         }
