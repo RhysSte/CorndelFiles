@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
+using System.Linq;
 
 
 namespace Email_Extraction
@@ -11,53 +12,56 @@ namespace Email_Extraction
         static void Main(string[] args)
         {
             string input = File.ReadAllText(@"C:\Corndel\Email Extraction\sample.txt");
-            string pattern = @"\w+@\w+\.com\b";
-            string domain = @"@";
-            
+            string pattern = @"\w+@\w+\.[^@\s]+";
+            Dictionary<string, int> RepeatedWordCount = new Dictionary<string, int>(); // looks for the repeated words by making dictionary
+
             foreach (var email in Regex.Matches(input, pattern))
             {
-                Console.WriteLine(email);
+                
+                var splitEmail = email.ToString().Split('@');
+                var domain = splitEmail[1];
+                
+                if (RepeatedWordCount.ContainsKey(domain))
+                {
+                    int value = RepeatedWordCount[domain];
+                    RepeatedWordCount[domain] = value + 1;
+                }
+                else
+                {
+                    RepeatedWordCount.Add(domain, 1);
+                }
             }
 
             int counter = Regex.Matches(input, pattern).Count;
             Console.WriteLine(counter);
 
-            
+
+            var items = from pair in RepeatedWordCount
+                        orderby pair.Value descending
+                        select pair;
+
             //Understanding Dictionary
 
-            var splitWord = input.Split(' '); // Collects the string
-            Dictionary<string, int> RepeatedWordCount = new Dictionary<string, int>(); // looks for the repeated words by making dictionary
-            for (int i = 0; i < splitWord.Length; i++)// checks the length of a string
-            {
-                if (Regex.IsMatch(domain, splitWord[i]))
-                {
-                    if (RepeatedWordCount.ContainsKey(splitWord[i]))
-                    {
-                        int value = RepeatedWordCount[splitWord[i]];
-                        RepeatedWordCount[splitWord[i]] = value + 1;
-                    }
-                    else
-                    {
-                        RepeatedWordCount.Add(splitWord[i], 1);
-                    }
-                }      
-            }
+            var splitWord = input.Split(' '); // splits the string from after the domain
 
-
-
-            foreach (KeyValuePair<string, int> kvp in RepeatedWordCount)
+            foreach (KeyValuePair<string, int> kvp in items)
             {
                 Console.WriteLine("{0} has {1} other of the same name", kvp.Key, kvp.Value);
             }
 
             Console.Read();
 
+            
+
+
+
             //END
 
+            //stuck
 
 
 
-            Console.WriteLine(counter);
+            Console.WriteLine("Done");
             Console.ReadLine();
         }
     }
