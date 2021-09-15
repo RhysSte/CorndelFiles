@@ -11,21 +11,20 @@ namespace Email_Extraction
         static void Main(string[] args)
         {
             string input = File.ReadAllText(@"C:\Corndel\Email Extraction\sample.txt");
-            string pattern = @"@softwire.com ";
+            string pattern = @"\w+@\w+\.com\b";
             string domain = @"@";
-
-            if (Regex.Match(pattern, input).Success)
+            
+            foreach (var email in Regex.Matches(input, pattern))
             {
-                Console.WriteLine("works");
+                Console.WriteLine(email);
             }
 
             int counter = Regex.Matches(input, pattern).Count;
+            Console.WriteLine(counter);
 
-            //Dictionary<string, Int16> domains = new Dictionary<string, Int16>();
-
+            
             //Understanding Dictionary
-            
-            
+
             var splitWord = input.Split(' '); // Collects the string
             Dictionary<string, int> RepeatedWordCount = new Dictionary<string, int>(); // looks for the repeated words by making dictionary
             for (int i = 0; i < splitWord.Length; i++)// checks the length of a string
